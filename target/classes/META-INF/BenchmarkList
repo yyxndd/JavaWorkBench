@@ -1,0 +1,1 @@
+JMH S 25 com.moeee.StreamBenchmark S 62 com.moeee.generated.StreamBenchmark_iteratorMaxInteger_jmhTest S 18 iteratorMaxInteger S 11 AverageTime E A 1 1 1 E I 1 5 E E I 1 5 E E I 1 2 E E E E E E U 12 MILLISECONDS E E 
