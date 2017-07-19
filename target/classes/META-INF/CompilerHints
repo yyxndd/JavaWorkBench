@@ -3,5 +3,10 @@ dontinline,*.*_avgt_jmhStub
 dontinline,*.*_sample_jmhStub
 dontinline,*.*_ss_jmhStub
 dontinline,*.*_thrpt_jmhStub
-inline,com/moeee/StreamBenchmark.iteratorMaxInteger
-inline,com/moeee/StreamBenchmark.setup
+inline,com/moeee/streambenchmark/StreamBenchmark3.forEachLambdaTrans
+inline,com/moeee/streambenchmark/StreamBenchmark3.forTrans
+inline,com/moeee/streambenchmark/StreamBenchmark3.forTransSimple
+inline,com/moeee/streambenchmark/StreamBenchmark3.iteratorTrans
+inline,com/moeee/streambenchmark/StreamBenchmark3.parallelStreamTrans
+inline,com/moeee/streambenchmark/StreamBenchmark3.setup1
+inline,com/moeee/streambenchmark/StreamBenchmark3.streamTrans

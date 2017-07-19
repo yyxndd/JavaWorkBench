@@ -6,20 +6,19 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Title: StreamBenchmark<br>
+ * Title: StreamBenchmark2<br>
  * Description: <br>
- * Create DateTime: 2017年06月08日 上午11:02 <br>
+ * Create DateTime: 2017年07月19日 上午10:46 <br>
  *
  * @author MoEee
  */
 @State(Scope.Benchmark)
-public class StreamBenchmark {
-
-    int size = 1000000;
+public class StreamBenchmark2 {
+    int size = 10000000;
     List<Integer> integers = null;
 
     public static void main(String[] args) {
-        StreamBenchmark benchmark = new StreamBenchmark();
+        StreamBenchmark2 benchmark = new StreamBenchmark2();
         benchmark.setup1();
         System.out.println("forTrans max is: " + benchmark.forTrans());
         System.out.println("forTransSimple max is: " + benchmark.forTransSimple());
@@ -38,7 +37,7 @@ public class StreamBenchmark {
     public void populate(List<Integer> list) {
         Random random = new Random();
         for (int i = 0; i < size; i++) {
-            list.add(random.nextInt(1000000));
+            list.add(random.nextInt(100));
         }
     }
 
@@ -49,9 +48,9 @@ public class StreamBenchmark {
     @Measurement(iterations = 5)
     @Warmup(iterations = 5)
     public int forTrans() {
-        int max = Integer.MIN_VALUE;
+        int max = 0;
         for (int i = 0; i < size; i++) {
-            max = Math.max(max, integers.get(i));
+            max = Math.addExact(max, integers.get(i));
         }
         return max;
     }
@@ -63,9 +62,9 @@ public class StreamBenchmark {
     @Measurement(iterations = 5)
     @Warmup(iterations = 5)
     public int forTransSimple() {
-        int max = Integer.MIN_VALUE;
+        int max = 0;
         for (Integer n : integers) {
-            max = Math.max(max, n);
+            max = Math.addExact(max, n);
         }
         return max;
     }
@@ -77,9 +76,9 @@ public class StreamBenchmark {
     @Measurement(iterations = 5)
     @Warmup(iterations = 5)
     public int iteratorTrans() {
-        int max = Integer.MIN_VALUE;
+        int max = 0;
         for (Iterator<Integer> it = integers.iterator(); it.hasNext(); ) {
-            max = Math.max(max, it.next());
+            max = Math.addExact(max, it.next());
         }
         return max;
     }
@@ -92,7 +91,7 @@ public class StreamBenchmark {
     @Warmup(iterations = 5)
     public int forEachLambdaTrans() {
         final Wrapper wrapper = new Wrapper();
-        wrapper.inner = Integer.MIN_VALUE;
+        wrapper.inner = 0;
         integers.forEach(i -> helper(i, wrapper));
         return wrapper.inner.intValue();
     }
@@ -102,7 +101,7 @@ public class StreamBenchmark {
     }
 
     private int helper(int i, Wrapper wrapper) {
-        wrapper.inner = Math.max(i, wrapper.inner);
+        wrapper.inner = Math.addExact(i, wrapper.inner);
         return wrapper.inner;
     }
 
@@ -113,8 +112,8 @@ public class StreamBenchmark {
     @Measurement(iterations = 5)
     @Warmup(iterations = 5)
     public int streamTrans() {
-        OptionalInt max = integers.stream().mapToInt(i->i.intValue()).max();
-        return max.getAsInt();
+        int max = integers.stream().mapToInt(i->i.intValue()).sum();
+        return max;
     }
 
     @Benchmark
@@ -124,7 +123,7 @@ public class StreamBenchmark {
     @Measurement(iterations = 5)
     @Warmup(iterations = 5)
     public int parallelStreamTrans() {
-        OptionalInt max = integers.parallelStream().mapToInt(i->i.intValue()).max();
-        return max.getAsInt();
+        int max = integers.parallelStream().mapToInt(i->i.intValue()).sum();
+        return max;
     }
 }
