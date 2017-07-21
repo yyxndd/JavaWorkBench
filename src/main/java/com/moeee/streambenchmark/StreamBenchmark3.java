@@ -51,16 +51,20 @@ public class StreamBenchmark3 {
     private VO translate(PO po) {
         VO result = new VO();
         result.setInt1(po.getInt1());
-        result.setStr1(po.getInt1() % 2 == 0 ? "偶数" : "奇数");
+        result.setStr1(transStr(po.getInt1()));
         result.setInt2(po.getInt2());
-        result.setStr2(po.getInt2() % 2 == 0 ? "偶数" : "奇数");
+        result.setStr2(transStr(po.getInt2()));
         result.setInt3(po.getInt3());
-        result.setStr3(po.getInt3() % 2 == 0 ? "偶数" : "奇数");
+        result.setStr3(transStr(po.getInt3()));
         result.setInt4(po.getInt4());
-        result.setStr4(po.getInt4() % 2 == 0 ? "偶数" : "奇数");
+        result.setStr4(transStr(po.getInt4()));
         result.setInt5(po.getInt5());
-        result.setStr5(po.getInt5() % 2 == 0 ? "偶数" : "奇数");
+        result.setStr5(transStr(po.getInt5()));
         return result;
+    }
+
+    private String transStr(int i) {
+        return i % 2 == 0 ? "偶数" : "奇数";
     }
 
     @Benchmark

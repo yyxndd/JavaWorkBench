@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 /**
@@ -22,7 +26,15 @@ public class BasicStream {
     int size = 100000;
     String[] strs = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+
+        ForkJoinPool pool = new ForkJoinPool(2);
+        Long result = pool.submit(() -> LongStream.range(1, 10).parallel()
+                .map(x -> x + 1)
+                .filter(x -> x < 5)
+                .reduce((x, y) -> x + y).getAsLong()).get();
+        System.out.println(result);
+
         System.out.println("三种创建方式：");
         // Object
         createMethod1();
@@ -30,6 +42,10 @@ public class BasicStream {
         createMethod2();
         // Collection
         createMethod3();
+        // iterator
+        iterate();
+        // generate
+        generate();
         System.out.println("");
 
         System.out.println("转换流：");
@@ -65,7 +81,18 @@ public class BasicStream {
         basicStream.collect().forEach(System.out::print);
         System.out.println("");
         System.out.println(basicStream.collectSB().toString());
+    }
 
+    private static void generate() {
+        System.out.println("generate");
+        Stream.generate(Math::random).limit(10).forEach(System.out::println);
+        System.out.println("");
+    }
+
+    private static void iterate() {
+        System.out.println("iterate");
+        Stream<Integer> intStream = Stream.iterate(1, integer -> integer + 1);
+        intStream.limit(10).mapToInt(Integer::intValue).forEach(System.out::println);
     }
 
     @Setup
